@@ -1,0 +1,3 @@
+# Copy Blocks To Clipboard
+
+<INSERT-YOUR-PLUGIN-DESCRIPTION-HERE>
