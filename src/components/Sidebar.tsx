@@ -26,10 +26,6 @@ export function Sidebar({ ctx }: { ctx: RenderItemFormSidebarPanelCtx }) {
   useEffect(() => {
     (async () => {
       try {
-/*        if (ctx.itemType.id !== presetModelId) {
-          await ctx.editItem(recordIdToFetch);
-        }*/
-
         // Make sure to only use this plugin with trusted editors, because your API key is exposed to them on the client
         const client = buildClient({
           apiToken: ctx.currentUserAccessToken as string,
