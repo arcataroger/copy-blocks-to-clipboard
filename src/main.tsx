@@ -7,8 +7,8 @@ connect({
   itemFormSidebarPanels() {
     return [
       {
-        id: "goToWebsite",
-        label: "Go to website",
+        id: "copyBlocksToClipboard",
+        label: "Copy Blocks to Clipboard",
         startOpen: true,
       },
     ];

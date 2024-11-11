@@ -12,6 +12,7 @@ export function Sidebar({ ctx }: { ctx: RenderItemFormSidebarPanelCtx }) {
     return <p>Invalid current user access token. Please check permissions.</p>;
   }
 
+  const presetModelId = "TkmnDqFjRZKVmuAmDIh5kg";
   const recordIdToFetch = "UjdCtTJCSJ6i-rwxOZBmUQ";
 
   const [blocksFromOtherRecord, setBlocksFromOtherRecord] = useState<
@@ -25,6 +26,10 @@ export function Sidebar({ ctx }: { ctx: RenderItemFormSidebarPanelCtx }) {
   useEffect(() => {
     (async () => {
       try {
+/*        if (ctx.itemType.id !== presetModelId) {
+          await ctx.editItem(recordIdToFetch);
+        }*/
+
         // Make sure to only use this plugin with trusted editors, because your API key is exposed to them on the client
         const client = buildClient({
           apiToken: ctx.currentUserAccessToken as string,
@@ -38,6 +43,10 @@ export function Sidebar({ ctx }: { ctx: RenderItemFormSidebarPanelCtx }) {
         // Get the actual record from the response
         const { data } = response;
         console.log("Original response", response);
+
+        // Load fields for that item type
+        const fields = await ctx.loadItemTypeFields(presetModelId);
+        console.log("fields", fields);
 
         // Now we run that external record through the itemToFormValues() method from the plugin's ctx
         const convertedItem = await ctx.itemToFormValues(data);
@@ -74,7 +83,7 @@ export function Sidebar({ ctx }: { ctx: RenderItemFormSidebarPanelCtx }) {
       Fetching from record ID{" "}
       <strong>
         <a
-          href={`/environments/datocms-support-main-copy-2024-11-11/editor/item_types/TkmnDqFjRZKVmuAmDIh5kg/items/${recordIdToFetch}`}
+          href={`/environments/datocms-support-main-copy-2024-11-11/editor/item_types/${presetModelId}/items/${recordIdToFetch}`}
         >
           {recordIdToFetch}
         </a>
@@ -87,7 +96,11 @@ export function Sidebar({ ctx }: { ctx: RenderItemFormSidebarPanelCtx }) {
         </p>
       )}
       <h3>Debug</h3>
-      {stringifiedBlocks ? <code>{stringifiedBlocks}</code> : <p>Loading...</p>}
+      {!!stringifiedBlocks ? (
+        <code>{stringifiedBlocks}</code>
+      ) : (
+        <p>Loading...</p>
+      )}
     </Canvas>
   );
 }
